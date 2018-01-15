@@ -1,0 +1,83 @@
+resources:
+  - name: x86_64_WindowsServer_2016_prep_repo
+    type: gitRepo
+    integration: avinci_gh
+    pointer:
+      sourceName: shippable/x86_64.WindowsServer_2016.prep
+      branch: master
+
+  - name: windowsServer2016_reqProc_repo
+    type: gitRepo
+    integration: avinci_gh
+    pointer:
+      sourceName: shippable/reqProc
+      branch: master
+
+  - name: windowsServer2016_execTemplates_repo
+    type: gitRepo
+    integration: avinci_gh
+    pointer:
+      sourceName: shippable/execTemplates
+      branch: master
+
+  - name: windowsServer2016_bits_ecr_cli
+    type: cliConfig
+    integration: ecr_bits_push
+    pointer:
+      region: us-east-1
+
+  - name: windowsServer2016_dh_cli
+    type: cliConfig
+    integration: ric03uec-dockerhub
+
+  - name: windowsServer2016_bits_access_cli
+    type: cliConfig
+    integration: aws_bits_access
+    pointer:
+      region: us-east-1
+
+  - name: windowsServer2016_reqExec_repo
+    type: gitRepo
+    integration: avinci_gh
+    pointer:
+      sourceName: shippable/reqExec
+      branch: master
+
+jobs:
+  - name: reqExec_x86_64_WindowsServer_2016_pack
+    type: runSh
+    triggerMode: parallel
+    dependencyMode: strict
+    runtime:
+      cluster: x86_w16_cus_01
+      container: false
+    steps:
+      - IN: x86_64_WindowsServer_2016_prep_repo
+        switch: off
+      - IN: windowsServer2016_bits_access_cli
+        switch: off
+      - IN: windowsServer2016_reqExec_repo
+      - TASK:
+          script:
+            - echo "Complete script for packaging reqExec"
+
+  - name: reqProc_x86_64_WindowsServer_2016_prep
+    type: runSh
+    triggerMode: parallel
+    dependencyMode: strict
+    runtime:
+      cluster: x86_w16_cus_01
+      container: false
+    steps:
+      - IN: windowsServer2016_bits_ecr_cli
+        scopes:
+          - ecr
+        switch: off
+      - IN: windowsServer2016_dh_cli
+        switch: off
+      - IN: windowsServer2016_reqProc_repo
+      - IN: reqExec_x86_64_WindowsServer_2016_pack
+      - IN: windowsServer2016_execTemplates_repo
+      - TASK:
+          script:
+            - echo "Complete script for pushing w16reqproc image"
