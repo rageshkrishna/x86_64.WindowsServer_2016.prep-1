@@ -76,6 +76,11 @@ jobs:
       - IN: windowsServer2016_dh_cli
         switch: off
       - IN: windowsServer2016_reqProc_repo
+      - IN: reqExec_x86_64_Ubuntu_14_04_pack
+      - IN: reqExec_x86_64_Ubuntu_16_04_pack
+      - IN: reqExec_x86_64_CentOS_7_pack
+      - IN: reqExec_x86_64_macOS_10_12_pack
+      - IN: reqExec_aarch64_Ubuntu_16_04_pack
       - IN: reqExec_x86_64_WindowsServer_2016_pack
       - IN: windowsServer2016_execTemplates_repo
       - TASK:
