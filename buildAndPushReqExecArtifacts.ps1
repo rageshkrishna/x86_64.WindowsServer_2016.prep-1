@@ -57,7 +57,7 @@ Function build_reqExec() {
 
 Function push_to_s3() {
   echo "Pushing to S3..."
-  Compress-Archive -Force -Path $REQ_EXEC_BINARY_DIR -DestinationPath $REQ_EXEC_BINARY_ZIP
+  Compress-Archive -Force -Path "$REQ_EXEC_BINARY_DIR\*" -DestinationPath $REQ_EXEC_BINARY_ZIP
   aws s3 cp --acl public-read "$REQ_EXEC_BINARY_ZIP" "$S3_BUCKET_BINARY_DIR"
 }
 
