@@ -59,7 +59,9 @@ jobs:
       - IN: windowsServer2016_reqExec_repo
       - TASK:
           script:
-            - echo "Complete script for packaging reqExec"
+            - pushd $(shipctl get_resource_state "x86_64_WindowsServer_2016_prep_repo")
+            - ./buildAndPushReqExecArtifacts.ps1 windowsServer2016_reqExec_repo
+            - popd
 
   - name: reqProc_x86_64_WindowsServer_2016_prep
     type: runSh
