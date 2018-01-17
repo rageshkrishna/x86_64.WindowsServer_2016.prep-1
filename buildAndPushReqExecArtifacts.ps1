@@ -13,7 +13,7 @@ $REQ_EXEC_PACKAGE_PATH = [System.IO.Path]::Combine($REQ_EXEC_PATH, "package", $A
 
 # Binaries
 $REQ_EXEC_BINARY_DIR = Join-Path "$env:TEMP" "reqExec"
-$REQ_EXEC_BINARY_TAR = Join-Path "$env:TEMP" "reqExec-$VERSION-$ARCHITECTURE-$OS.tar.gz"
+$REQ_EXEC_BINARY_ZIP = Join-Path "$env:TEMP" "reqExec-$VERSION-$ARCHITECTURE-$OS.zip"
 $S3_BUCKET_BINARY_DIR = "$ARTIFACTS_BUCKET/reqExec/$VERSION/"
 
 Function check_input() {
@@ -45,6 +45,11 @@ Function build_reqExec() {
     echo "Packaging reqExec..."
     & $REQ_EXEC_PACKAGE_PATH\package.ps1
 
+    # main.exe should be inside dist/main/ instead of dist/
+    $bin_directory = ".\dist\main"
+    New-Item -ItemType Directory -Force -Path $bin_directory
+    Move-Item -Force .\dist\main.exe $bin_directory
+
     echo "Copying dist..."
     Copy-Item dist -Destination $REQ_EXEC_BINARY_DIR -Recurse
   popd
@@ -52,8 +57,8 @@ Function build_reqExec() {
 
 Function push_to_s3() {
   echo "Pushing to S3..."
-  tar -zcvf "$REQ_EXEC_BINARY_TAR" -C "$REQ_EXEC_BINARY_DIR" .
-  aws s3 cp --acl public-read "$REQ_EXEC_BINARY_TAR" "$S3_BUCKET_BINARY_DIR"
+  Compress-Archive -Path $REQ_EXEC_BINARY_DIR -DestinationPath $REQ_EXEC_BINARY_ZIP
+  aws s3 cp --acl public-read "$REQ_EXEC_BINARY_ZIP" "$S3_BUCKET_BINARY_DIR"
 }
 
 check_input
