@@ -87,4 +87,6 @@ jobs:
       - IN: windowsServer2016_execTemplates_repo
       - TASK:
           script:
-            - echo "Complete script for pushing w16reqproc image"
+            - pushd $(shipctl get_resource_state "windowsServer2016_reqProc_repo")
+            - ./build.ps1 x86_64 WindowsServer_2016 drydock w16reqproc
+            - popd
