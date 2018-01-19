@@ -89,4 +89,5 @@ jobs:
           script:
             - pushd $(shipctl get_resource_state "windowsServer2016_reqProc_repo")
             - ./build.ps1 x86_64 WindowsServer_2016 drydock w16reqproc
+            - docker system prune -f
             - popd
