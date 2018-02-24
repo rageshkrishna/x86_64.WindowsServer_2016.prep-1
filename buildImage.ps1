@@ -1,4 +1,4 @@
-`$ErrorActionPreference = "Stop"
+$ErrorActionPreference = "Stop"
 
 $CONTEXT = "$($args[0])"
 $CURR_JOB = "$($args[1])"
@@ -41,15 +41,10 @@ Function create_image() {
 
 Function create_out_state() {
   echo "Creating a state file for $RES_IMAGE_OUT"
-  shipctl post_resource_state_multi "$RES_IMAGE_OUT" `
-  "versionName=$TAG_NAME `
-  IMG_REPO_COMMIT_SHA=$RES_REPO_COMMIT `
-  BUILD_NUMBER=$BUILD_NUMBER"
+  shipctl post_resource_state_multi "$RES_IMAGE_OUT" "versionName=$TAG_NAME" "IMG_REPO_COMMIT_SHA=$RES_REPO_COMMIT" "BUILD_NUMBER=$BUILD_NUMBER"
 
   echo "Creating a state file for $CURR_JOB"
-  shipctl post_resource_state_multi "$CURR_JOB" `
-  "versionName=$TAG_NAME `
-  IMG_REPO_COMMIT_SHA=$RES_REPO_COMMIT"
+  shipctl post_resource_state_multi "$CURR_JOB" "versionName=$TAG_NAME" "IMG_REPO_COMMIT_SHA=$RES_REPO_COMMIT"
 }
 
 Function main() {
@@ -59,4 +54,3 @@ Function main() {
 }
 
 main
-`
