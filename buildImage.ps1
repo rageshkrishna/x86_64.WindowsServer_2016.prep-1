@@ -9,11 +9,11 @@ if ("$($args[2])") {
 $TAG_NAME = "master"
 
 Function set_context() {
-  $RES_REPO = "${CONTEXT}_repo"
-  $RES_REPO_COMMIT = $(shipctl get_resource_version_key "$RES_REPO" "shaData.commitSha")
-  $IMAGE_NAME = $CONTEXT.ToLower()
-  $RES_IMAGE_OUT = "${CONTEXT}_img"
-  $BLD_IMG = "${HUB_ORG}/${IMAGE_NAME}:${TAG_NAME}"
+  $script:RES_REPO = "${CONTEXT}_repo"
+  $script:RES_REPO_COMMIT = $(shipctl get_resource_version_key "$RES_REPO" "shaData.commitSha")
+  $script:IMAGE_NAME = $CONTEXT.ToLower()
+  $script:RES_IMAGE_OUT = "${CONTEXT}_img"
+  $script:BLD_IMG = "${HUB_ORG}/${IMAGE_NAME}:${TAG_NAME}"
 
   echo "BUILD_NUMBER=$BUILD_NUMBER"
   echo "CONTEXT=$CONTEXT"
