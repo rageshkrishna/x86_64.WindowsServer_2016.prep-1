@@ -10,6 +10,7 @@ $TAG_NAME = "master"
 
 Function set_context() {
   $script:RES_REPO = "${CONTEXT}_repo"
+  shipctl get_resource_version_key "$RES_REPO" "shaData"
   $script:RES_REPO_COMMIT = $(shipctl get_resource_version_key "$RES_REPO" "shaData.commitSha")
   $script:IMAGE_NAME = $CONTEXT.ToLower()
   $script:RES_IMAGE_OUT = "${CONTEXT}_img"
