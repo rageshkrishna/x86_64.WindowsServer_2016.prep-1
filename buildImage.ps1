@@ -9,18 +9,6 @@ if ("$($args[2])") {
 $TAG_NAME = "master"
 
 Function set_context() {
-  $resMetaDirectory = $(shipctl get_resource_meta "w16_repo")
-  echo "resMetaDirectory is $resMetaDirectory"
-
-  $resVersionFile = Join-Path "$resMetaDirectory" "version.json"
-  echo "resVersionFile is $resVersionFile"
-
-  echo "Calling get_json_value"
-  shipctl get_json_value "$resVersionFile" "propertyBag.shaData.commitSha"
-
-  echo "Calling get-content"
-  (Get-Content -Raw $resVersionFile | ConvertFrom-Json).shaData
-
   $script:RES_REPO = "${CONTEXT}_repo"
   $script:RES_REPO_COMMIT = $(shipctl get_resource_version_key "$RES_REPO" "shaData.commitSha")
   $script:IMAGE_NAME = $CONTEXT.ToLower()
