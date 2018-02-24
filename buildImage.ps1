@@ -1,4 +1,4 @@
-$ErrorActionPreference = "Stop"
+`$ErrorActionPreference = "Stop"
 
 $CONTEXT = "$($args[0])"
 $CURR_JOB = "$($args[1])"
@@ -32,7 +32,7 @@ Function set_context() {
 Function create_image() {
   pushd $(shipctl get_resource_state $RES_REPO)
     echo "Starting Docker build & push for $BLD_IMG"
-    docker build -t=$BLD_IMG --pull .
+    docker build -t="$BLD_IMG" --pull .
     echo "Pushing $BLD_IMG"
     docker push $BLD_IMG
     echo "Completed Docker build & push for $BLD_IMG"
@@ -59,3 +59,4 @@ Function main() {
 }
 
 main
+`
