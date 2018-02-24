@@ -15,7 +15,7 @@ Function set_context() {
   $script:RES_IMAGE_OUT = "${CONTEXT}_img"
   $script:BLD_IMG = "${HUB_ORG}/${IMAGE_NAME}:${TAG_NAME}"
 
-  echo "BUILD_NUMBER=$BUILD_NUMBER"
+  echo "BUILD_NUMBER=$env:BUILD_NUMBER"
   echo "CONTEXT=$CONTEXT"
   echo "HUB_ORG=$HUB_ORG"
   echo "TAG_NAME=$TAG_NAME"
@@ -41,7 +41,7 @@ Function create_image() {
 
 Function create_out_state() {
   echo "Creating a state file for $RES_IMAGE_OUT"
-  shipctl post_resource_state_multi "$RES_IMAGE_OUT" "versionName=$TAG_NAME" "IMG_REPO_COMMIT_SHA=$RES_REPO_COMMIT" "BUILD_NUMBER=$BUILD_NUMBER"
+  shipctl post_resource_state_multi "$RES_IMAGE_OUT" "versionName=$TAG_NAME" "IMG_REPO_COMMIT_SHA=$RES_REPO_COMMIT" "BUILD_NUMBER=$env:BUILD_NUMBER"
 
   echo "Creating a state file for $CURR_JOB"
   shipctl post_resource_state_multi "$CURR_JOB" "versionName=$TAG_NAME" "IMG_REPO_COMMIT_SHA=$RES_REPO_COMMIT"
