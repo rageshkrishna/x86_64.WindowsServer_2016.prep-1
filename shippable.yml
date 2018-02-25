@@ -73,6 +73,21 @@ resources:
     seed:
       versionName: master
 
+  - name: w16aspnetcore_repo
+    type: gitRepo
+    integration: avinci_gh
+    pointer:
+      sourceName: dry-dock/w16aspnetcore
+      branch: master
+
+  - name: w16aspnetcore_img
+    type: image
+    integration: shipDH
+    pointer:
+      sourceName: "drydock/w16aspnetcore"
+    seed:
+      versionName: master
+
 jobs:
   - name: reqExec_x86_64_WindowsServer_2016_pack
     type: runSh
@@ -162,3 +177,24 @@ jobs:
             - ./buildImage.ps1 w16dotnetcore x86_64_Windows_2016_prep
             - popd
       - OUT: w16dotnetcore_img
+
+  - name: aspnetcore_x86_64_Windows_2016_prep
+    type: runSh
+    triggerMode: parallel
+    dependencyMode: strict
+    runtime:
+      nodePool: x86_w16_cus_01
+      container: false
+    steps:
+      - IN: x86_64_WindowsServer_2016_prep_repo
+        switch: off
+      - IN: windowsServer2016_dh_cli
+        switch: off
+      - IN: w16dotnetcore_img
+      - IN: w16aspnetcore_repo
+      - TASK:
+          script:
+            - pushd $(shipctl get_resource_state "x86_64_WindowsServer_2016_prep_repo")
+            - ./buildImage.ps1 w16aspnetcore x86_64_Windows_2016_prep
+            - popd
+      - OUT: w16aspnetcore_img
