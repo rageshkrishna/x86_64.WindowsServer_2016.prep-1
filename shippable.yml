@@ -123,7 +123,6 @@ jobs:
       - IN: windowsServer2016_dh_cli
         switch: off
       - IN: windowsServer2016_reqProc_repo
-      - IN: reqProc_repo
       - IN: w2k16_reqExec_x8664_pack
       - IN: windowsServer2016_execTemplates_repo
       - TASK:
